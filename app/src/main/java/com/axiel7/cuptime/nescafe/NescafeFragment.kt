@@ -53,6 +53,7 @@ class NescafeFragment : BaseFragment<FragmentNescafeBinding>() {
             }
             else {
                 switchButton(true)
+                valueAnimator?.pause()
                 binding.timeText.text = getString(R.string.paused)
             }
         }
