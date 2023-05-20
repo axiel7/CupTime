@@ -26,7 +26,7 @@ class NescafeFragment : BaseFragment<FragmentNescafeBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(NescafeViewModel::class.java)
+        viewModel = ViewModelProvider(this)[NescafeViewModel::class.java]
         _binding = FragmentNescafeBinding.inflate(inflater, container, false)
         return binding.root
     }
