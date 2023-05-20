@@ -80,6 +80,16 @@
             android:text="@string/start"
             app:icon="@drawable/ic_play"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reset_button"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:text="@string/reset"
+            android:visibility="invisible"/>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

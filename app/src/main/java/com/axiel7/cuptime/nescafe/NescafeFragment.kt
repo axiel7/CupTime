@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import androidx.core.animation.addListener
+import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.axiel7.cuptime.BaseFragment
 import com.axiel7.cuptime.R
@@ -40,24 +44,6 @@ class NescafeFragment : BaseFragment<FragmentNescafeBinding>() {
             }
         }
 
-        binding.startButton.setOnClickListener {
-            binding.startButton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-            if (binding.startButton.text == getString(R.string.start)) {
-                switchButton(false)
-                if (valueAnimator?.isPaused == true) {
-                    valueAnimator?.resume()
-                }
-                else {
-                    initTimer()
-                }
-            }
-            else {
-                switchButton(true)
-                valueAnimator?.pause()
-                binding.timeText.text = getString(R.string.paused)
-            }
-        }
-
         initClickListeners()
         binding.line1.performClick()
     }
@@ -71,13 +57,21 @@ class NescafeFragment : BaseFragment<FragmentNescafeBinding>() {
                 binding.timeText.text = valueAnimator?.animatedValue.toString()
             }
             doOnEnd {
-                ToneHelper().beep(1500)
-                switchButton(true)
-                binding.timeText.text = getString(R.string.finished)
-                valueAnimator?.cancel()
+                onEndTimer()
             }
             start()
         }
+    }
+
+    private fun onEndTimer() {
+        ToneHelper().beep(1500)
+        switchButton(true)
+        binding.timeText.text = getString(R.string.finished)
+    }
+
+    private fun onCancelTimer() {
+        switchButton(true)
+        binding.timeText.text = viewModel.linesToTime().toString()
     }
 
     private fun switchButton(play: Boolean) {
@@ -92,6 +86,34 @@ class NescafeFragment : BaseFragment<FragmentNescafeBinding>() {
     }
 
     private fun initClickListeners() {
+        binding.startButton.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            if (binding.startButton.text == getString(R.string.start)) {
+                switchButton(false)
+                if (valueAnimator?.isPaused == true) {
+                    valueAnimator?.resume()
+                }
+                else {
+                    initTimer()
+                }
+            }
+            else {
+                switchButton(true)
+                valueAnimator?.pause()
+                binding.timeText.text = getString(R.string.paused)
+                binding.resetButton.isVisible = true
+            }
+        }
+
+        binding.resetButton.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            valueAnimator?.removeAllListeners()
+            valueAnimator?.cancel()
+            onCancelTimer()
+            valueAnimator?.doOnEnd { onEndTimer() }
+            it.isInvisible = true
+        }
+
         binding.line1.setOnClickListener {
             if (!isTimerRunning) {
                 it.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)

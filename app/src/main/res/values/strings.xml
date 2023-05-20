@@ -7,4 +7,5 @@
     <string name="finished">Finished!</string>
     <string name="cancelled">Cancelled</string>
     <string name="paused">Paused</string>
+    <string name="reset">Reset</string>
 </resources>
