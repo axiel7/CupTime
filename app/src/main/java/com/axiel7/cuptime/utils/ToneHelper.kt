@@ -9,7 +9,7 @@ class ToneHelper {
     private val toneG = ToneGenerator(AudioManager.STREAM_ALARM, 100)
 
     fun beep(duration: Int) {
-        toneG.startTone(ToneGenerator.TONE_CDMA_HIGH_PBX_SLS, duration)
+        toneG.startTone(ToneGenerator.TONE_CDMA_PIP, duration)
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             toneG.release()
