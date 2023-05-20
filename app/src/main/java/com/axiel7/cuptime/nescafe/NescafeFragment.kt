@@ -34,11 +34,11 @@ class NescafeFragment : BaseFragment<FragmentNescafeBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.lines.observe(viewLifecycleOwner, {
+        viewModel.lines.observe(viewLifecycleOwner) {
             if (!isTimerRunning) {
                 binding.timeText.text = viewModel.linesToTime().toString()
             }
-        })
+        }
 
         binding.startButton.setOnClickListener {
             binding.startButton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
