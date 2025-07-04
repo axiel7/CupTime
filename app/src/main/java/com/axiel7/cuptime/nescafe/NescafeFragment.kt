@@ -64,7 +64,8 @@ class NescafeFragment : BaseFragment<FragmentNescafeBinding>() {
     }
 
     private fun onEndTimer() {
-        ToneHelper().beep(1500)
+        ToneHelper.beep(2000)
+        ToneHelper.vibrate(safeContext, 2000)
         switchButton(true)
         binding.timeText.text = getString(R.string.finished)
     }
